@@ -1,17 +1,26 @@
 
 import { useShoppingCart } from '../context/ShoppingCartContext'
-import  data  from '../data/items.json'
+import  {data} from '../data/items'
 import formatNumber from '../utils/Format'
 type cartItemProp = {
     id:number
     quantity:number
 }
 
+export type dataProp = {
+  id:number,
+  name:string,
+  price:number,
+  imgUrl:string,
+  rating:number,
+  category:string
+}
+
 const CartItem = ({id,quantity}:cartItemProp) => {
 
     const {removeFromCart} = useShoppingCart()
 
-   const itemInfo =  data.find(item=> item.id === id)
+   const itemInfo =  data.find((item:dataProp)=> item.id === id)
 
    if(itemInfo == null)
    return null;

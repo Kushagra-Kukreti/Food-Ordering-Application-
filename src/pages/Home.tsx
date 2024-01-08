@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -20,7 +21,16 @@ const Home = () => {
     }
   ]
 
+
+
+
    const navigate =  useNavigate();
+
+   const { isAuthenticated} = useAuth0();
+
+   if(!isAuthenticated){
+      return <img style={{objectFit:"cover", width:"100%"}} src={categories[1].imgUrl}/>
+   }
   return (
     <div style={{
       display:"flex",
