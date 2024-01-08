@@ -2,8 +2,8 @@
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import CartItem from "./CartItem";
 import formatNumber from '../utils/Format'
-import  data  from '../data/items.json'
-
+import  {data}  from '../data/items'
+import { dataProp } from "./CartItem";
 
 const ShoppingCartItem = () => {
 
@@ -11,7 +11,7 @@ const ShoppingCartItem = () => {
 
     const totalAmount =  cartItems.reduce((total,item)=>{
        
-    const itemInfo  = data.find(i=>i.id === item.id)
+    const itemInfo  = data.find((i:dataProp)=>i.id === item.id)
 
     return total+(itemInfo?.price||0)*item.quantity
 
