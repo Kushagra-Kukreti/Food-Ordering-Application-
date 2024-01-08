@@ -1,60 +1,68 @@
  [
   {
     "id": 1,
-    "name": "Book",
-    "price": 10.99,
+    "name": "Magazine",
+    "price": 8.99,
     "imgUrl": "/imgs/book.jpg",
-    "rating":4.0
+    "rating":4.2,
+    "category":"Book"
   },
   {
     "id": 2,
-    "name": "Computer",
-    "price": 1199,
+    "name": "Laptop",
+    "price": 1099,
     "imgUrl": "/imgs/computer.jpg",
-    "rating":3.0
+    "rating":3.5,
+    "category":"Computer"
   },
   {
     "id": 3,
-    "name": "Banana",
-    "price": 1.05,
+    "name": "Fruits",
+    "price": 1.12,
     "imgUrl": "/imgs/banana.jpg",
-    "rating":1.0
+    "rating":1.3,
+    "category":"Banana"
   },
   {
     "id": 4,
-    "name": "Car",
-    "price": 14000,
+    "name": "Taxi",
+    "price": 13600,
     "imgUrl": "/imgs/car.jpg",
-    "rating":2.0
+    "rating":2.5,
+    "category":"Car"
     
   },
   {
-    "id": 1,
+    "id": 5,
     "name": "Book",
     "price": 10.99,
     "imgUrl": "/imgs/book.jpg",
-    "rating":4.0
+    "rating":4.0,
+    "category":"Book"
   },
   {
-    "id": 2,
+    "id": 6,
     "name": "Computer",
     "price": 1199,
     "imgUrl": "/imgs/computer.jpg",
-    "rating":3.0
+    "rating":3.0,
+    "category":"Computer"
   },
   {
-    "id": 3,
+    "id": 7,
     "name": "Banana",
     "price": 1.05,
     "imgUrl": "/imgs/banana.jpg",
-    "rating":1.0
+    "rating":1.0,
+    "category":"Banana"
   },
   {
-    "id": 4,
+    "id": 8,
     "name": "Car",
     "price": 14000,
     "imgUrl": "/imgs/car.jpg",
-    "rating":2.0
+    "rating":2.0,
+    "category":"Car"
     
   }
  ]
