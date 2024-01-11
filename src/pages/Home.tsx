@@ -7,17 +7,17 @@ const Home = () => {
     {
       type:"Dining",
       desc:"Dining is a multisensory experience that transcends mere sustenance",
-      imgUrl:"/imgs/car.jpg"
+      imgUrl:"/imgs/dining.jpg"
     },
     {
       type:"Delivery",
       desc:"Dining is a multisensory experience that transcends mere sustenance",
-      imgUrl:"/imgs/banana.jpg"
+      imgUrl:"/imgs/delivery.jpg"
     },
     {
       type:"NightLife",
       desc:"Dining is a multisensory experience that transcends mere sustenance",
-      imgUrl:"/imgs/book.jpg"
+      imgUrl:"/imgs/nightlife.jpg"
     }
   ]
 
@@ -29,7 +29,7 @@ const Home = () => {
    const { isAuthenticated} = useAuth0();
 
    if(!isAuthenticated){
-      return <img style={{objectFit:"cover", width:"100%"}} src={categories[1].imgUrl}/>
+      return <img style={{marginTop:"1.5rem",height:"80vh",width:"100%",objectFit:"cover"}} src="/imgs/landing-page.jpg"/>
    }
   return (
     <div style={{
