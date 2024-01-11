@@ -54,6 +54,7 @@ const Header = () => {
 
           {(cartQuantity > 0 && localStorage.getItem("authentication") )? (
             <button
+            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
               onClick={() => openCart()}
               style={{ marginLeft:"0.5rem",height: "3rem", width: "3rem", position: "relative" }}
               className="btn btn-outline-primary pb-2 pt-1 rounded-circle"

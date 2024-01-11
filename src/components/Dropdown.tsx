@@ -26,7 +26,7 @@ const Dropdown = ({getSorted,title,menuInfo,colored}:DropdownProps) => {
     <ul className="dropdown-menu">
       {menuInfo.map(item=>
         <li>
-        <a onClick={()=>getSorted(title,item)} className="dropdown-item" href="#">
+        <a onClick={()=>getSorted(title,item)}  className="dropdown-item" href="#">
           {item}
         </a>
       </li>

@@ -22,24 +22,24 @@ const ShoppingCartItem = () => {
 
     <div
       className={`${"offcanvas offcanvas-end"} ${isOpen=== true?"show":""}`}
-      id="offcanvas"
-      aria-labelledby="offcanvasLabel"
       tabIndex={-1}
+      data-bs-scroll="true"
+      id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel"
 
     >
       <div className="offcanvas-header">
-        <h5 className="offcanvas-title" id="offcanvasLabel">
+        <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">
           Cart
         </h5>
         <button
           type="button"
           className="btn-close"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close" 
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasExample" 
           aria-controls="offcanvasExample"
           onClick={()=>closeCart()}
+          data-bs-dismiss="offcanvas" 
+          aria-label="Close"
         ></button>
       </div>
       <div className="offcanvas-body vstack gap-3">
