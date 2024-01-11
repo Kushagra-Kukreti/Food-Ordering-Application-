@@ -1,7 +1,6 @@
 import StoreItem from "../components/StoreItem";
 import Dropdown from "../components/Dropdown";
-import { useState } from "react";
-
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { data as storeItems } from "../data/items";
 import { dataProp } from "../components/CartItem";
 
@@ -10,19 +9,56 @@ const Store = () => {
   const [val, setVal] = useState("");
   const [title, setTitle] = useState("");
 
-  const getSorted = (t: string, c: string) => {
-    setVal(c);
-    setTitle(t);
-  };
- 
-   const info =  new Set<string>();
-   {
-    storeItems.map((item:dataProp)=>{
-      info.add(item.category);
-    })
-   }
+  const [dataItems, setDataItems] = useState(storeItems);
+  const [filters,setFilters] = useState<string[]>([])
+  const sortData = useCallback(
+    (data: dataProp[], sortBy: string, sortOrder: string) => {
+      
+      return data.slice().sort((a: dataProp, b: dataProp) => {
+        setFilters([...filters,sortBy])
+        if (sortBy === "Price") {
+          return sortOrder === "High to Low" ? b.price - a.price : a.price - b.price;
+        } else if (sortBy === "Rating") {
+          return sortOrder === "High to Low" ? b.rating - a.rating : a.rating - b.rating;
+        }
+        return 0;
+      });
+    },
+    [filters]
+  );
 
-   const categories = Array.from(info);
+  const getSorted = useCallback(
+    (t: string, c: string) => {
+      setVal(c);
+      setTitle(t);
+
+      let sortedData;
+
+      if (title === "Category") {
+        setFilters([...filters,"Category"])
+        sortedData = storeItems.filter((currItem: dataProp) => val === currItem.category);
+      } else if (title === "Price" || title === "Rating") {
+        sortedData = sortData(dataItems, title, val);
+      } else {
+        sortedData = [...storeItems]; // dont do any changes
+      }
+
+      setDataItems(sortedData);
+    },
+    [title, val,filters, dataItems, sortData]
+  );
+
+  const info = useMemo(() => {
+    const categoriesSet = new Set<string>();
+    storeItems.forEach((item: dataProp) => {
+      categoriesSet.add(item.category);
+    });
+    return Array.from(categoriesSet);
+  }, []);
+
+  useEffect(() => {
+    getSorted(title, val);
+  }, [title, val, getSorted]);
 
   return (
     <>
@@ -36,19 +72,22 @@ const Store = () => {
         }}
       >
         <Dropdown
+          colored = {filters.includes("Rating")?true:false}
           getSorted={getSorted}
           title={"Rating"}
           menuInfo={["High to Low", "Low to High"]}
         />
         <Dropdown
+        colored = {filters.includes("Price")?true:false}
           getSorted={getSorted}
           title={"Price"}
           menuInfo={["High to Low", "Low to High"]}
         />
         <Dropdown
+          colored = {filters.includes("Category")?true:false}
           getSorted={getSorted}
           title={"Category"}
-          menuInfo={categories}
+          menuInfo={info}
         />
 
         <input
@@ -67,31 +106,13 @@ const Store = () => {
       </div>
 
       <div className="row">
-        {storeItems
-          .filter((currItem:dataProp) => {
-            if (title === "Category") {
-              if (val === currItem.category) {
-                return currItem;
-              }
-            } else return currItem;
-          })
-          .sort((a:dataProp, b:dataProp) =>{
-            if (title === "Price") {
-              if (val === "High to Low") return b.price - a.price;
-              else if (val === "Low to High") return a.price - b.price;
-              return 0;
-            } else if (title === "Rating") {
-              if (val === "High to Low") return b.rating - a.rating;
-              else if (val === "Low to High") return a.rating - b.rating;
-              return 0;
-            } else return 0;
-          })
-          .filter((i:dataProp) => {
-            return search.toLowerCase() == " "
+        {dataItems
+          .filter((i: dataProp) => {
+            return search.toLowerCase() === " "
               ? i
               : i.name.toLowerCase().startsWith(search.toLowerCase());
           })
-          .map((item:dataProp, index:number) => (
+          .map((item: dataProp, index: number) => (
             <div
               key={index}
               className="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3"

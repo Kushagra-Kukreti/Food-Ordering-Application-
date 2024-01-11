@@ -1,36 +1,19 @@
-                            
-//jisse localstorage set hogi  
+import { useEffect, useState } from "react";
 
-import { useEffect, useState } from "react"
+export function useLocalStorage<T>(key: string, initialValue: T | (() => T)) {
+  const [value, setValue] = useState<T>(() => {
+    const jsonValue = localStorage.getItem(key);
 
-//intialvalue ya to ek cartItem ka array hoga ya usse set krne ke liye function 
- export function useLocalStorage<T>(key:string,initialValue:T|(()=>T)){
-    
-    const [value,setValue] = useState<T>(()=>{
-        const jsonValue = localStorage.getItem(key);
-        
+    if (jsonValue !== null) {
+      return JSON.parse(jsonValue);
+    }
 
-        //info mil gyi agr
-        if(jsonValue!=null)return JSON.parse(jsonValue);
+    return typeof initialValue === "function" ? (initialValue as () => T)() : initialValue;
+  });
 
-        //nahi mili
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
 
-        return initialValue;
-
-    })
-
-
-    useEffect (()=>{
-       localStorage.setItem(key,JSON.stringify(value))
-    },[key,value])
-    
-
-
-
-
-
-
-    return [value,setValue] as [typeof value,typeof setValue]
-
-
- }
+  return [value, setValue] as [typeof value, typeof setValue];
+}

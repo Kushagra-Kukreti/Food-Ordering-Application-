@@ -4,12 +4,13 @@ type DropdownProps={
   getSorted:(title:string,value:string)=>void
   title:string
   menuInfo:string[]
+  colored:boolean
 }
-const Dropdown = ({getSorted,title,menuInfo}:DropdownProps) => {
+const Dropdown = ({getSorted,title,menuInfo,colored}:DropdownProps) => {
   return (
     <div className="dropdown">
     <button
-      className="btn dropdown-toggle text-muted"
+      className={`${"btn dropdown-toggle text-muted"} ${(colored)?"btn-warning":""}`}
       type="button"
       data-bs-toggle="dropdown"
       aria-expanded="false"
