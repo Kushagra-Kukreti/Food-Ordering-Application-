@@ -1,14 +1,18 @@
 import StoreItem from "../components/StoreItem";
 import Dropdown from "../components/Dropdown";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { data as storeItems } from "../data/items";
+import { fetchData } from "../data/items";
 import { dataProp } from "../components/CartItem";
 
 const Store = () => {
   const [search, setSearch] = useState("");
   const [val, setVal] = useState("");
   const [title, setTitle] = useState("");
-
+  const [storeItems,setStoreItems] = useState<dataProp[]>([])
+  fetchData().then((fetchedData) => {
+    const items = [...fetchedData];
+    setStoreItems(items)
+   });
   const [dataItems, setDataItems] = useState(storeItems);
   const [filters,setFilters] = useState<string[]>([])
   const sortData = useCallback(
@@ -45,7 +49,7 @@ const Store = () => {
 
       setDataItems(sortedData);
     },
-    [title, val,filters, dataItems, sortData]
+    [title, storeItems,val,filters, dataItems, sortData]
   );
 
   const info = useMemo(() => {
@@ -54,7 +58,7 @@ const Store = () => {
       categoriesSet.add(item.category);
     });
     return Array.from(categoriesSet);
-  }, []);
+  }, [storeItems]);
 
   useEffect(() => {
     getSorted(title, val);
