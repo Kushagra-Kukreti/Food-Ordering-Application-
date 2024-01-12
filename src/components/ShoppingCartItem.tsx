@@ -1,17 +1,20 @@
 
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import CartItem from "./CartItem";
+import CartItem, { dataProp } from "./CartItem";
 import formatNumber from '../utils/Format'
-import  {data}  from '../data/items'
-import { dataProp } from "./CartItem";
+import  {fetchData}  from '../data/items'
+import { useState } from "react";
 
 const ShoppingCartItem = () => {
 
     const {isOpen,closeCart,cartItems}= useShoppingCart()
-
+    const [itemInfo,setItemInfo] = useState<dataProp>()
     const totalAmount =  cartItems.reduce((total,item)=>{
        
-    const itemInfo  = data.find((i:dataProp)=>i.id === item.id)
+      fetchData().then((fetchedData) => {
+       const items = fetchedData.find((i:dataProp) => i.id === item.id);
+       setItemInfo(items)
+      });
 
     return total+(itemInfo?.price||0)*item.quantity
 

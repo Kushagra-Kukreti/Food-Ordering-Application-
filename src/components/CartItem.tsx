@@ -1,6 +1,7 @@
 
+import { useState } from 'react'
 import { useShoppingCart } from '../context/ShoppingCartContext'
-import  {data} from '../data/items'
+import  {fetchData} from '../data/items'
 import formatNumber from '../utils/Format'
 type cartItemProp = {
     id:number
@@ -19,8 +20,11 @@ export type dataProp = {
 const CartItem = ({id,quantity}:cartItemProp) => {
 
     const {removeFromCart} = useShoppingCart()
-
-   const itemInfo =  data.find((item:dataProp)=> item.id === id)
+    const [itemInfo,setItemInfo] = useState<dataProp>()
+    fetchData().then((fetchedData) => {
+      const items = fetchedData.find((i:dataProp) => i.id === id);
+      setItemInfo(items)
+     });
 
    if(itemInfo == null)
    return null;
