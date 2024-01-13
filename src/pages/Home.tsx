@@ -1,5 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
+import Skeleton from "@mui/material/Skeleton";
+import React, { Suspense } from "react";
+const BeforeAuthentication = React.lazy(()=>import("../components/BeforeAuthentication"));
+const Category = React.lazy(()=>import("../components/Category")) ;
 
 const Home = () => {
   const categories = [
@@ -20,22 +23,19 @@ const Home = () => {
     },
   ];
 
-  const navigate = useNavigate();
+ 
 
   const { isAuthenticated } = useAuth0();
 
   if (!isAuthenticated) {
-    return (
-      <img
-        style={{
-          marginTop: "1.5rem",
-          height: "80vh",
-          width: "100%",
-          objectFit: "cover",
-        }}
-        src="/imgs/landing-page.jpg"
-      />
-    );
+    return <Suspense fallback={<Skeleton style={{
+      
+        marginTop: "1.5rem",
+        height: "80vh",
+        width: "100%",
+        objectFit: "cover",
+     
+    }} animation="wave" />}><BeforeAuthentication/></Suspense>
   }
   return (
     <div
@@ -48,29 +48,14 @@ const Home = () => {
       }}
     >
       {categories.map((item,index) => (
-        <button
-         key={index}
-          onClick={() => navigate("/store")}
-          className="card"
-          style={{
+        <Suspense fallback={<Skeleton style={{
+
             width: "20rem",
             border: "0.1rem solid orange",
-          }}
-        >
-          <img
-            style={{
-              height: "10rem",
-              objectFit: "cover",
-            }}
-            src={item.imgUrl}
-            className="card-img-top"
-            alt="..."
-          />
-          <div className="card-body">
-            <h5 className="card-title">{item.type}</h5>
-            <p className="card-text">{item.desc}</p>
-          </div>
-        </button>
+    
+        }} animation="wave" />}>
+        <Category item={item} index={index} />
+        </Suspense>
       ))}
     </div>
   );
