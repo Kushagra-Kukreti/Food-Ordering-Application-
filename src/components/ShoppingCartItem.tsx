@@ -1,30 +1,25 @@
 
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import CartItem, { dataProp } from "./CartItem";
+import CartItem from "./CartItem";
 import formatNumber from '../utils/Format'
-import  {fetchData}  from '../data/items'
-import { useState } from "react";
 
 const ShoppingCartItem = () => {
 
-    const {isOpen,closeCart,cartItems}= useShoppingCart()
-    const [itemInfo,setItemInfo] = useState<dataProp>()
+   const {dataItems} =  useShoppingCart();
+    const {cartItems}= useShoppingCart()
     const totalAmount =  cartItems.reduce((total,item)=>{
        
-      fetchData().then((fetchedData) => {
-       const items = fetchedData.find((i:dataProp) => i.id === item.id);
-       setItemInfo(items)
-      });
-
-    return total+(itemInfo?.price||0)*item.quantity
-
+       
+        const foundItem = dataItems.find(myItem=> (myItem.id) === item.id)
+         
+        return total+ (foundItem?.price||0)* item.quantity
     }
     ,0)
     
   return (
 
     <div
-      className={`${"offcanvas offcanvas-end"} ${isOpen=== true?"show":""}`}
+      className={"offcanvas offcanvas-end"}
       tabIndex={-1}
       data-bs-scroll="true"
       id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel"
@@ -40,13 +35,12 @@ const ShoppingCartItem = () => {
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasExample" 
           aria-controls="offcanvasExample"
-          onClick={()=>closeCart()}
           data-bs-dismiss="offcanvas" 
           aria-label="Close"
         ></button>
       </div>
       <div className="offcanvas-body vstack gap-3">
-        {cartItems.map(item=> <CartItem id={item.id} quantity = {item.quantity}/>)}
+        {cartItems.map(item=> <CartItem key={item.id} id={item.id} quantity = {item.quantity}/>)}
         <div className='d-flex justify-content-between fw-bold'><h4>Total:</h4> <h4>{formatNumber(totalAmount)}</h4></div>
       </div>
     </div>
