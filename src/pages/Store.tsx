@@ -1,10 +1,12 @@
-import StoreItem from "../components/StoreItem";
+
 import Dropdown from "../components/Dropdown";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { dataProp } from "../components/CartItem";
 import { dataItem, useShoppingCart } from "../context/ShoppingCartContext";
 import { filterData } from "../utils/FilterData";
- 
+import React from "react";
+import Skeleton from '@mui/material/Skeleton';
+const StoreItem = React.lazy(()=>import("../components/StoreItem"));
 
 export type filterType = {
   t:string
@@ -107,6 +109,9 @@ const Store = () => {
               key={index}
               className="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3"
             >
+              <Suspense fallback={
+                  <Skeleton animation="wave" />
+              }>
               <StoreItem
                key={index}
                 rating={item.rating}
@@ -115,6 +120,7 @@ const Store = () => {
                 price={item.price}
                 title={item.name}
               />
+              </Suspense>
             </div>
           ))}
       </div>
