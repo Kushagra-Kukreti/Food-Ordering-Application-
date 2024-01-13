@@ -3,13 +3,15 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Header = () => {
-  const { openCart, cartQuantity } = useShoppingCart();
+  const {cartQuantity } = useShoppingCart();
   const { loginWithRedirect, logout, isAuthenticated, user} = useAuth0();
 
-  if(isAuthenticated){
-    localStorage.setItem("authentication","true");
-    localStorage.setItem("name",user?.nickname?.toString()||"");
-  }
+
+    if(isAuthenticated){
+      localStorage.setItem("authentication","true");
+      localStorage.setItem("name",user?.nickname?.toString()||"");
+    }
+ 
  
   return (
     <>
@@ -55,7 +57,6 @@ const Header = () => {
           {(cartQuantity > 0 && localStorage.getItem("authentication") )? (
             <button
             type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
-              onClick={() => openCart()}
               style={{ marginLeft:"0.5rem",height: "3rem", width: "3rem", position: "relative" }}
               className="btn btn-outline-primary pb-2 pt-1 rounded-circle"
             >

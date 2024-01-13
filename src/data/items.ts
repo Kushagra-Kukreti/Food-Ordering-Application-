@@ -7,3 +7,4 @@ export const fetchData = async () => {
   const data = await items();
   return data;
 };
+

@@ -1,68 +1,57 @@
 import StoreItem from "../components/StoreItem";
 import Dropdown from "../components/Dropdown";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { fetchData } from "../data/items";
+import { useEffect, useState } from "react";
 import { dataProp } from "../components/CartItem";
+import { dataItem, useShoppingCart } from "../context/ShoppingCartContext";
+import { filterData } from "../utils/FilterData";
+ 
+
+export type filterType = {
+  t:string
+  v:string
+}
+
+
+
 
 const Store = () => {
-  const [search, setSearch] = useState("");
-  const [val, setVal] = useState("");
-  const [title, setTitle] = useState("");
-  const [storeItems,setStoreItems] = useState<dataProp[]>([])
-  fetchData().then((fetchedData) => {
-    const items = [...fetchedData];
-    setStoreItems(items)
-   });
-  const [dataItems, setDataItems] = useState(storeItems);
-  const [filters,setFilters] = useState<string[]>([])
-  const sortData = useCallback(
-    (data: dataProp[], sortBy: string, sortOrder: string) => {
-      
-      return data.slice().sort((a: dataProp, b: dataProp) => {
-        setFilters([...filters,sortBy])
-        if (sortBy === "Price") {
-          return sortOrder === "High to Low" ? b.price - a.price : a.price - b.price;
-        } else if (sortBy === "Rating") {
-          return sortOrder === "High to Low" ? b.rating - a.rating : a.rating - b.rating;
-        }
-        return 0;
-      });
-    },
-    [filters]
-  );
+   const [search, setSearch] = useState("");
+   const{dataItems} = useShoppingCart()
+   const[storeItems,setStoreItems] = useState<dataItem[]>(dataItems)
+   const[categories,setCategories] = useState<string[]>();
+   const [appliedFilters,setAppliedFilters] = useState<filterType[]>([])
+   const [title,setTitle] = useState<string>();
+   const [value,setValue] = useState<string>();
+   const addFilter = (t:string,v:string)=>{
+    setAppliedFilters([...appliedFilters,{t,v}])
+    setTitle(t)
+    setValue(v);
+  }
 
-  const getSorted = useCallback(
-    (t: string, c: string) => {
-      setVal(c);
-      setTitle(t);
+  useEffect(()=>{
+        filterData(storeItems,appliedFilters,dataItems,setStoreItems,title||"",value||"")
+  },[appliedFilters])
 
-      let sortedData;
+ useEffect(()=>{
 
-      if (title === "Category") {
-        setFilters([...filters,"Category"])
-        sortedData = storeItems.filter((currItem: dataProp) => val === currItem.category);
-      } else if (title === "Price" || title === "Rating") {
-        sortedData = sortData(dataItems, title, val);
-      } else {
-        sortedData = [...storeItems]; // dont do any changes
-      }
+        console.log("Data Items initialised")
+        setStoreItems(dataItems);
+        const categoriesSet = new Set<string>();
+        dataItems.forEach((item: dataItem) => {
+          categoriesSet.add(item.category);
+        });
+        console.log("Categories List initialised")
+        setCategories(Array.from(categoriesSet));
 
-      setDataItems(sortedData);
-    },
-    [title, storeItems,val,filters, dataItems, sortData]
-  );
 
-  const info = useMemo(() => {
-    const categoriesSet = new Set<string>();
-    storeItems.forEach((item: dataProp) => {
-      categoriesSet.add(item.category);
-    });
-    return Array.from(categoriesSet);
-  }, [storeItems]);
+        return (()=>{
+          console.log("Store unmounted")
+          setStoreItems([])
+          setCategories([])
+        })
+        
+ },[dataItems])
 
-  useEffect(() => {
-    getSorted(title, val);
-  }, [title, val, getSorted]);
 
   return (
     <>
@@ -76,22 +65,19 @@ const Store = () => {
         }}
       >
         <Dropdown
-          colored = {filters.includes("Rating")?true:false}
-          getSorted={getSorted}
+          addFilter={addFilter}
           title={"Rating"}
           menuInfo={["High to Low", "Low to High"]}
         />
         <Dropdown
-        colored = {filters.includes("Price")?true:false}
-          getSorted={getSorted}
+         addFilter={addFilter}
           title={"Price"}
           menuInfo={["High to Low", "Low to High"]}
         />
         <Dropdown
-          colored = {filters.includes("Category")?true:false}
-          getSorted={getSorted}
+         addFilter={addFilter}
           title={"Category"}
-          menuInfo={info}
+          menuInfo={categories||[]}
         />
 
         <input
@@ -110,7 +96,7 @@ const Store = () => {
       </div>
 
       <div className="row">
-        {dataItems
+        {storeItems && storeItems
           .filter((i: dataProp) => {
             return search.toLowerCase() === " "
               ? i
@@ -122,6 +108,7 @@ const Store = () => {
               className="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3"
             >
               <StoreItem
+               key={index}
                 rating={item.rating}
                 id={item.id}
                 url={item.imgUrl}

@@ -3,25 +3,33 @@
 //context 
 //use krte h uss context ko 
 
-import { ReactNode, createContext, useContext, useState } from "react"
+import { ReactNode, createContext, useContext, useEffect, useState } from "react"
 import ShoppingCartItem from "../components/ShoppingCartItem"
 import { useLocalStorage } from "../hooks/useLocalStorage"
+import { fetchData } from "../data/items"
 
 
 type ShoppingCartProviderProps={
     children:ReactNode
 }
 
+export type dataItem = {
+  id:number
+  name:string
+  price:number
+  imgUrl:string
+  rating:number 
+  category:string 
+}
+
 type ShoppingCartProps = {
   cartQuantity:number
-  openCart:()=>void
-  closeCart:()=>void
   getItemQuantity:(id:number) =>number
   increaseCartQuantity:(id:number)=>void
   decreaseCartQuantity:(id:number)=>void
   removeFromCart:(id:number)=>void
   cartItems:CartItem[]
-  isOpen:boolean
+  dataItems:dataItem[]
 }
 
 type CartItem = {
@@ -36,8 +44,8 @@ export function useShoppingCart(){
 
 
 export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
-  const[isOpen,setIsOpen] = useState(false)
   const[cartItems,setCartItems] = useLocalStorage<CartItem[]>("shopping-cart",[])
+  const[dataItems,setDataItems] = useState([])
   function getItemQuantity(id: number) {
     return cartItems.find(item => item.id === id)?.quantity || 0
   }
@@ -55,7 +63,14 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
         })
       }
     })
-  }
+  } 
+  
+  useEffect(()=>{
+    fetchData().then((fetchedData) => {
+      setDataItems(()=>fetchedData)
+     });
+     
+  },[])
   function decreaseCartQuantity(id: number) {
     setCartItems(currItems => {
       if (currItems.find(item => item.id === id)?.quantity === 1) {
@@ -80,8 +95,6 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
   //total in cart
   const cartQuantity = cartItems.reduce((quantity,item)=> item.quantity+quantity,0)
 
-  const openCart = ()=> setIsOpen(true)
-  const closeCart = ()=>setIsOpen(false)
 
   return (
     <ShoppingCartContext.Provider value={{
@@ -91,10 +104,8 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
         decreaseCartQuantity,
         removeFromCart,
         cartItems,
+        dataItems,
         cartQuantity,
-        openCart,
-        closeCart,
-        isOpen
 
       }}>
         {children}

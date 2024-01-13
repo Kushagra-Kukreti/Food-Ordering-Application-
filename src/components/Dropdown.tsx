@@ -1,16 +1,14 @@
 
-
 type DropdownProps={
-  getSorted:(title:string,value:string)=>void
   title:string
   menuInfo:string[]
-  colored:boolean
+  addFilter:(title:string,val:string)=>void
 }
-const Dropdown = ({getSorted,title,menuInfo,colored}:DropdownProps) => {
+const Dropdown = ({title,menuInfo,addFilter}:DropdownProps) => {
   return (
-    <div className="dropdown">
+    <div key={title} className="dropdown">
     <button
-      className={`${"btn dropdown-toggle text-muted"} ${(colored)?"btn-warning":""}`}
+      className={`${"btn dropdown-toggle text-muted"}`}
       type="button"
       data-bs-toggle="dropdown"
       aria-expanded="false"
@@ -25,8 +23,8 @@ const Dropdown = ({getSorted,title,menuInfo,colored}:DropdownProps) => {
     </button>
     <ul className="dropdown-menu">
       {menuInfo.map(item=>
-        <li>
-        <a onClick={()=>getSorted(title,item)}  className="dropdown-item" href="#">
+        <li key={item}>
+        <a onClick={()=>addFilter(title,item)}  className="dropdown-item" href="#">
           {item}
         </a>
       </li>
