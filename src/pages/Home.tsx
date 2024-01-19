@@ -30,12 +30,13 @@ const Home = () => {
   if (!isAuthenticated) {
     return <Suspense fallback={<Skeleton style={{
       
-        marginTop: "1.5rem",
-        height: "80vh",
-        width: "100%",
-        objectFit: "cover",
+      marginTop: "1.5rem",
+      height: "80vh",
+      width: "100%",
+      objectFit: "cover",
+      backgroundColor:"lightgray"
      
-    }} animation="wave" />}><BeforeAuthentication/></Suspense>
+    }}  variant="rectangular" animation="wave"/>}><BeforeAuthentication/></Suspense>
   }
   return (
     <div
@@ -50,10 +51,10 @@ const Home = () => {
       {categories.map((item,index) => (
         <Suspense fallback={<Skeleton style={{
 
-            width: "20rem",
-            border: "0.1rem solid orange",
+          height: "10rem",
+          objectFit: "cover",
     
-        }} animation="wave" />}>
+        }}   variant="rectangular" animation="wave" />}>
         <Category item={item} index={index} />
         </Suspense>
       ))}
