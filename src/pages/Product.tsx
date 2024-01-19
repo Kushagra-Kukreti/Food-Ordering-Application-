@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import formatNumber from "../utils/Format";
 const Product = () => {
@@ -9,8 +9,10 @@ const Product = () => {
     removeFromCart,
   } = useShoppingCart();
   const location = useLocation();
-
   const info = location.state;
+  if(info === null){
+    return <h4 className="text-muted mt-3">You Came to the product page but without selecting a product.</h4>
+  } 
   const quantity = getItemQuantity(info.id);
   return (
     <div className="card mb-3">
