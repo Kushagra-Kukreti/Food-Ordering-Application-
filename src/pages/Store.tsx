@@ -6,14 +6,13 @@ import { dataItem, useShoppingCart } from "../context/ShoppingCartContext";
 import { filterData } from "../utils/FilterData";
 import React from "react";
 import Skeleton from '@mui/material/Skeleton';
+import { useNavigate } from "react-router-dom";
 const StoreItem = React.lazy(()=>import("../components/StoreItem"));
 
 export type filterType = {
   t:string
   v:string
 }
-
-
 
 
 const Store = () => {
@@ -53,8 +52,11 @@ const Store = () => {
         })
         
  },[dataItems])
-
-
+ const navigate = useNavigate()
+ if(!localStorage.getItem('authentication')){
+   navigate("/")
+ }
+ 
   return (
     <>
       <div
