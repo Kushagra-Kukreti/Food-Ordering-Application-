@@ -2,11 +2,13 @@
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import CartItem from "./CartItem";
 import formatNumber from '../utils/Format'
+import { useAuth0 } from "@auth0/auth0-react";
 
 const ShoppingCartItem = () => {
 
-   const {dataItems} =  useShoppingCart();
-    const {cartItems}= useShoppingCart()
+   const {dataItems,cartItems,emptyCart} =  useShoppingCart();
+   
+    const {logout} = useAuth0();
     const totalAmount =  cartItems.reduce((total,item)=>{
        
        
@@ -42,6 +44,19 @@ const ShoppingCartItem = () => {
       <div className="offcanvas-body vstack gap-3">
         {cartItems.map(item=> <CartItem key={item.id} id={item.id} quantity = {item.quantity}/>)}
         <div className='d-flex justify-content-between fw-bold'><h4>Total:</h4> <h4>{formatNumber(totalAmount)}</h4></div>
+
+        <div className="btn btn-secondary" 
+         onClick={() =>
+          {
+            logout({ logoutParams: { returnTo: window.location.origin } })
+            localStorage.removeItem('authentication');
+            localStorage.removeItem('name');
+            emptyCart()
+
+          }
+           
+        }
+        >CHECKOUT</div>
       </div>
     </div>
   );

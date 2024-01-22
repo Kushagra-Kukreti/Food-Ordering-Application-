@@ -22,11 +22,13 @@ const StoreItem = ({ id, url, price, title, rating }: StoreItemProp) => {
   return (
     <div className="card" style={{ width: "22rem" }}>
       <NavLink
+      className="card-img-top"
         to={"/product"}
         state={{ id, url, price, title, rating }}
       >
-        <img
-          src={url} style={{width:"22rem" , height:"10rem", objectFit:"cover"}}
+        <img 
+          src={url} style={{height:"10rem", width:'100%', objectFit:"cover"}}
+
         />
       </NavLink>
 
@@ -35,7 +37,7 @@ const StoreItem = ({ id, url, price, title, rating }: StoreItemProp) => {
         <div className="d-flex flex-row justify-content-between align-items-baseline m-2">
           <h4 className="card-text">{title} 
           <div
-          style={{marginLeft:"0.5rem",fontSize:"60%"}}
+          style={{marginLeft:"0.5rem",fontSize:"40%"}}
         className="badge text-bg-success"
         >
         {rating}
@@ -65,7 +67,7 @@ const StoreItem = ({ id, url, price, title, rating }: StoreItemProp) => {
               e.stopPropagation();
               increaseCartQuantity(id);
             }}
-            className="btn btn-primary w-100"
+            className="btn btn-danger w-100"
           >
             + Add to Cart
           </div>
@@ -99,8 +101,6 @@ const StoreItem = ({ id, url, price, title, rating }: StoreItemProp) => {
               >
                 -
               </div>
-            </div>
-            <div className="d-flex align-items-center justify-content-center">
               <div
                 className="btn btn-sm btn-danger"
                 onClick={(e) => {
@@ -111,6 +111,9 @@ const StoreItem = ({ id, url, price, title, rating }: StoreItemProp) => {
                 Remove
               </div>
             </div>
+             
+             
+           
           </>
         )}
       </div>

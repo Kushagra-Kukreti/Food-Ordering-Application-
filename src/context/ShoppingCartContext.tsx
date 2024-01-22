@@ -30,6 +30,7 @@ type ShoppingCartProps = {
   removeFromCart:(id:number)=>void
   cartItems:CartItem[]
   dataItems:dataItem[]
+  emptyCart:()=>void
 }
 
 type CartItem = {
@@ -65,6 +66,9 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
     })
   } 
   
+  function emptyCart(){
+    setCartItems([])
+  }
   useEffect(()=>{
     fetchData().then((fetchedData) => {
       setDataItems(()=>fetchedData)
@@ -106,6 +110,7 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
         cartItems,
         dataItems,
         cartQuantity,
+        emptyCart
 
       }}>
         {children}
