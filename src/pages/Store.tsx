@@ -67,7 +67,7 @@ const Store = () => {
           marginBottom: "0.3rem",
           marginTop: "0.3rem",
         }}
-      >
+      > 
         <Dropdown
           addFilter={addFilter}
           title={"Rating"}
@@ -99,7 +99,7 @@ const Store = () => {
         />
       </div>
 
-      <div className="row">
+      <div className="row" >
         {storeItems && storeItems
           .filter((i: dataProp) => {
             return search.toLowerCase() === " "
@@ -109,7 +109,8 @@ const Store = () => {
           .map((item: dataProp, index: number) => (
             <div
               key={index}
-              className="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3"
+              className="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3 "
+              style={{display:"flex", alignItems:"center", justifyContent:"center"}}
             >
               <Suspense fallback={
                   <Skeleton animation="wave" />

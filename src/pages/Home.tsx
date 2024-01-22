@@ -27,7 +27,11 @@ const Home = () => {
 
   const { isAuthenticated } = useAuth0();
 
-  if (!isAuthenticated) {
+  if(isAuthenticated){
+    localStorage.setItem("authentication", "true")
+  }
+
+  if (!localStorage.getItem("authentication")) {
     return <Suspense fallback={<Skeleton style={{
       
       marginTop: "1.5rem",
@@ -41,12 +45,13 @@ const Home = () => {
   return (
     <div
       style={{
-        display: "flex",
-        gap: "3rem",
-        justifyContent: "center",
-        alignItems: "center",
+        gap: "2rem",
         marginTop: "5%",
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
       }}
+      className="row"
     >
       {categories.map((item,index) => (
         <Suspense fallback={<Skeleton style={{
@@ -54,7 +59,7 @@ const Home = () => {
           height: "10rem",
           objectFit: "cover",
     
-        }}   variant="rectangular" animation="wave" />}>
+        }}  className="card col-6-sm col-4-md col-4-lg col-4-xl"  variant="rectangular" animation="wave" />}>
         <Category item={item} index={index} />
         </Suspense>
       ))}

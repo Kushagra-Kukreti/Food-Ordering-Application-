@@ -15,12 +15,15 @@ const Category = ({item,index}:CategoryProp) => {
     const navigate = useNavigate();
   return (
     <button
+    className="card col-6-sm col-4-md col-4-lg col-4-xl"
          key={index}
           onClick={() => navigate("/store")}
-          className="card"
+          
           style={{
+            minWidth: "20rem",
             width: "20rem",
             border: "0.1rem solid orange",
+          
           }}
         >
           <img

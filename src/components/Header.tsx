@@ -15,20 +15,22 @@ const Header = () => {
  
   return (
     <>
-      <nav className="navbar navbar-expand-lg sticky-top bg-light">
+      <nav style={{ minWidth: "20rem"}} className="navbar navbar-expand sticky-top bg-light">
         <div className="container-fluid container">
           <div
             style={{ gap: "0.5rem" }}
             className="collapse navbar-collapse align-items-baseline"
             id="navbarSupportedContent"
-          >
+          > 
+
             <NavLink style={{ textDecoration: "none" }} to={"/"}>
-              <h2 style={{ color: "red", fontWeight: "bold" }}>
+              
+              <h2 style={{  color: "red", fontWeight: "bold" }}>
                 <span style={{ color: "black" }}>Food</span>Junction
               </h2>
+      
             </NavLink>
 
-           { localStorage.getItem('authentication') && <h4>Welcome ,{localStorage.getItem("name")}</h4>} 
           </div>
 
           {localStorage.getItem('authentication') ? (
