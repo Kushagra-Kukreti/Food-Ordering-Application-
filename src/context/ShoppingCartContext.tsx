@@ -7,6 +7,7 @@ import { ReactNode, createContext, useContext, useEffect, useState } from "react
 import ShoppingCartItem from "../components/ShoppingCartItem"
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import { fetchData } from "../data/items"
+import { filterType } from "../pages/Store"
 
 
 type ShoppingCartProviderProps={
@@ -31,6 +32,9 @@ type ShoppingCartProps = {
   cartItems:CartItem[]
   dataItems:dataItem[]
   emptyCart:()=>void
+  appliedFilters:filterType[]
+  setAppliedFilters:React.Dispatch<React.SetStateAction<filterType[]>>
+  removeFromSelectedFilters:(title:string)=>void
 }
 
 type CartItem = {
@@ -47,6 +51,7 @@ export function useShoppingCart(){
 export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
   const[cartItems,setCartItems] = useLocalStorage<CartItem[]>("shopping-cart",[])
   const[dataItems,setDataItems] = useState([])
+  const [appliedFilters,setAppliedFilters] = useState<filterType[]>([])
   function getItemQuantity(id: number) {
     return cartItems.find(item => item.id === id)?.quantity || 0
   }
@@ -96,6 +101,11 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
     })
   }
 
+  function removeFromSelectedFilters(title:string){
+    const newFilters = appliedFilters.filter((filter)=>filter.t !== title); 
+    setAppliedFilters(newFilters)
+  }
+
   //total in cart
   const cartQuantity = cartItems.reduce((quantity,item)=> item.quantity+quantity,0)
 
@@ -110,7 +120,10 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
         cartItems,
         dataItems,
         cartQuantity,
-        emptyCart
+        emptyCart,
+        appliedFilters,
+        setAppliedFilters,
+        removeFromSelectedFilters,
 
       }}>
         {children}

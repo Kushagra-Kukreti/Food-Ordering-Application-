@@ -7,6 +7,7 @@ import { filterData } from "../utils/FilterData";
 import React from "react";
 import Skeleton from '@mui/material/Skeleton';
 import { useNavigate } from "react-router-dom";
+import FilterCountButton from "../components/FilterCountButton";
 const StoreItem = React.lazy(()=>import("../components/StoreItem"));
 
 export type filterType = {
@@ -20,7 +21,7 @@ const Store = () => {
    const{dataItems} = useShoppingCart()
    const[storeItems,setStoreItems] = useState<dataItem[]>(dataItems)
    const[categories,setCategories] = useState<string[]>();
-   const [appliedFilters,setAppliedFilters] = useState<filterType[]>([])
+  const {appliedFilters,setAppliedFilters}= useShoppingCart()
    const [title,setTitle] = useState<string>();
    const [value,setValue] = useState<string>();
    const addFilter = (t:string,v:string)=>{
@@ -68,6 +69,8 @@ const Store = () => {
           marginTop: "0.3rem",
         }}
       > 
+
+      <FilterCountButton/>
         <Dropdown
           addFilter={addFilter}
           title={"Rating"}
@@ -113,7 +116,7 @@ const Store = () => {
               style={{display:"flex", alignItems:"center", justifyContent:"center"}}
             >
               <Suspense fallback={
-                  <Skeleton animation="wave" />
+                  <Skeleton animation="wave" variant="rectangular"/>
               }>
               <StoreItem
                key={index}
