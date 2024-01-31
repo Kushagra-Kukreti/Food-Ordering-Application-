@@ -35,6 +35,8 @@ type ShoppingCartProps = {
   appliedFilters:filterType[]
   setAppliedFilters:React.Dispatch<React.SetStateAction<filterType[]>>
   removeFromSelectedFilters:(title:string)=>void
+  storeItems:dataItem[]
+  setStoreItems:React.Dispatch<React.SetStateAction<dataItem[]>>
 }
 
 type CartItem = {
@@ -51,6 +53,7 @@ export function useShoppingCart(){
 export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
   const[cartItems,setCartItems] = useLocalStorage<CartItem[]>("shopping-cart",[])
   const[dataItems,setDataItems] = useState([])
+  const[storeItems,setStoreItems] = useState<dataItem[]>(dataItems)
   const [appliedFilters,setAppliedFilters] = useState<filterType[]>([])
   function getItemQuantity(id: number) {
     return cartItems.find(item => item.id === id)?.quantity || 0
@@ -103,7 +106,7 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
 
   function removeFromSelectedFilters(title:string){
     const newFilters = appliedFilters.filter((filter)=>filter.t !== title); 
-    setAppliedFilters(newFilters)
+    setAppliedFilters(()=>newFilters)
   }
 
   //total in cart
@@ -124,6 +127,8 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
         appliedFilters,
         setAppliedFilters,
         removeFromSelectedFilters,
+        storeItems,
+        setStoreItems
 
       }}>
         {children}

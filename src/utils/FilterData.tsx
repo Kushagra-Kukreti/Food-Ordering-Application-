@@ -1,30 +1,45 @@
 import { dataItem} from "../context/ShoppingCartContext";
 import { filterType } from "../pages/Store";
 
- export const filterData = (storeItems:dataItem[],appliedFilters:filterType[],dataItems:dataItem[],setStoreItems:React.Dispatch<React.SetStateAction<dataItem[]>>,title:string,val:string)=>{
+ export const filterData = (appliedFilters:filterType[],dataItems:dataItem[],storeItems:dataItem[])=>{ 
 
-  let sortedData:dataItem[] = [];
-  if (title === "Category") {
-     sortedData = dataItems.filter((currItem: dataItem) => val === currItem.category);
-   } else if (title === "Price" || title === "Rating") {
-     sortedData = sortData(storeItems,dataItems, title, val,appliedFilters);
-   }
-   setStoreItems(sortedData);
+   
+  if(appliedFilters.length>0){
+    console.log("Applied filters are:",appliedFilters)
+   const newData =  appliedFilters.map((filter)=>{
+      const temp = ()=>{
+        let sortedData;
+        if (filter.t === "Category") {
+          sortedData = dataItems.filter((currItem: dataItem) => filter.v === currItem.category);
+          console.log(sortedData)
+        } else if (filter.t === "Price" || filter.t === "Rating") {
+          console.log(storeItems)
+          sortedData = sortData(storeItems, filter.t, filter.v);
+        }
+        return sortedData;
+          
+      }
+
+      return temp();
+    })
+
+    return newData.flat() as dataItem[];
+    
+  }
+  
+    return dataItems;
+
 }
 
 
  const sortData =
-    (storeItems:dataItem[],dataItems: dataItem[], sortBy: string, sortOrder: string,appliedFilters:filterType[]) => {
+    (storeItems:dataItem[], sortBy: string, sortOrder: string) => {
         
       
-      let data:dataItem[] = []
-
-     const isPresent =  appliedFilters.find((currItem)=>currItem.t === "Category")
-      
-     data = (isPresent)?storeItems:dataItems
-       
+      const data = storeItems
 
       return data.slice().sort((a: dataItem, b: dataItem) => {
+        
         if (sortBy === "Price") {
           return sortOrder === "High to Low" ? b.price - a.price : a.price - b.price;
         } else if (sortBy === "Rating") {

@@ -18,20 +18,13 @@ export type filterType = {
 
 const Store = () => {
    const [search, setSearch] = useState("");
-   const{dataItems} = useShoppingCart()
-   const[storeItems,setStoreItems] = useState<dataItem[]>(dataItems)
+   const{dataItems,appliedFilters,setStoreItems,storeItems} = useShoppingCart()
    const[categories,setCategories] = useState<string[]>();
-  const {appliedFilters,setAppliedFilters}= useShoppingCart()
-   const [title,setTitle] = useState<string>();
-   const [value,setValue] = useState<string>();
-   const addFilter = (t:string,v:string)=>{
-    setAppliedFilters([...appliedFilters,{t,v}])
-    setTitle(t)
-    setValue(v);
-  }
+
 
   useEffect(()=>{
-        filterData(storeItems,appliedFilters,dataItems,setStoreItems,title||"",value||"")
+    const newData = filterData(appliedFilters,dataItems,storeItems)
+    setStoreItems(newData)
   },[appliedFilters])
 
  useEffect(()=>{
@@ -72,17 +65,14 @@ const Store = () => {
 
       <FilterCountButton/>
         <Dropdown
-          addFilter={addFilter}
           title={"Rating"}
           menuInfo={["High to Low", "Low to High"]}
         />
         <Dropdown
-         addFilter={addFilter}
           title={"Price"}
           menuInfo={["High to Low", "Low to High"]}
         />
         <Dropdown
-         addFilter={addFilter}
           title={"Category"}
           menuInfo={categories||[]}
         />
