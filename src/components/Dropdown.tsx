@@ -6,12 +6,11 @@ import { useShoppingCart } from "../context/ShoppingCartContext"
 type DropdownProps={
   title:string
   menuInfo:string[]
-  addFilter:(title:string,val:string)=>void
 }
-const Dropdown = ({title,menuInfo,addFilter}:DropdownProps) => {
+const Dropdown = ({title,menuInfo}:DropdownProps) => {
 
   const [selected,setSelected] = useState<boolean>(false);
-  const {removeFromSelectedFilters}=useShoppingCart()
+  const {removeFromSelectedFilters,setAppliedFilters ,appliedFilters}=useShoppingCart()
 
   if(selected){
    return<div
@@ -58,7 +57,7 @@ const Dropdown = ({title,menuInfo,addFilter}:DropdownProps) => {
         <li key={item}>
         <a onClick={()=>{
           setSelected(true)
-          addFilter(title,item)
+            setAppliedFilters([...appliedFilters,{t:title,v:item}]) 
           }}  className="dropdown-item" href="#">
           {item}
         </a>
