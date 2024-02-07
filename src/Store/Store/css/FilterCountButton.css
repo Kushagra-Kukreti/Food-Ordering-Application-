@@ -1,0 +1,20 @@
+.filter-button {
+    outline: none;
+    border: 0.15rem solid whitesmoke;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+  }
+  
+  .filter-count {
+    border-radius: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    width: 1.5em;
+    margin-left: 0.5em;
+  }
+  

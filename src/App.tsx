@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom"
-import Header from "./components/Header"
-import Home from "./pages/Home"
-import Store from "./pages/Store"
+import Header from "./Shared/components/Header"
+import Home from "./Home/pages/Home"
+import Store from "./Store/pages/Store"
 import { ShoppingCartProvider } from "./context/ShoppingCartContext"
-import Product from "./pages/Product"
+import Product from "./Product/pages/Product"
 
 function App() {
 

@@ -1,0 +1,18 @@
+
+.cart-item {
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+.itemImage{
+    width: 8em;
+    height: 5em;
+    object-fit: cover;
+}
+
+.remove-button {
+    border: none;
+    background-color: transparent;
+    color: red;
+    cursor: pointer;
+}

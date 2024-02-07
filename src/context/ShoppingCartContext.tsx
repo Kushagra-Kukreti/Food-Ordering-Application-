@@ -1,13 +1,10 @@
 
-// provider 
-//context 
-//use krte h uss context ko 
 
 import { ReactNode, createContext, useContext, useEffect, useState } from "react"
-import ShoppingCartItem from "../components/ShoppingCartItem"
+import ShoppingCartItem from "../Store/Cart/components/ShoppingCartItem"
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import { fetchData } from "../data/items"
-import { filterType } from "../pages/Store"
+import { filterType } from "../Store/pages/Store"
 
 
 type ShoppingCartProviderProps={
@@ -52,7 +49,7 @@ export function useShoppingCart(){
 
 export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
   const[cartItems,setCartItems] = useLocalStorage<CartItem[]>("shopping-cart",[])
-  const[dataItems,setDataItems] = useState([])
+  const[dataItems,setDataItems] = useLocalStorage<dataItem[]>("dataItems",[])
   const[storeItems,setStoreItems] = useState<dataItem[]>(dataItems)
   const [appliedFilters,setAppliedFilters] = useState<filterType[]>([])
   function getItemQuantity(id: number) {
@@ -106,7 +103,7 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
 
   function removeFromSelectedFilters(title:string){
     const newFilters = appliedFilters.filter((filter)=>filter.t !== title); 
-    setAppliedFilters(()=>newFilters)
+    setAppliedFilters(newFilters)
   }
 
   //total in cart

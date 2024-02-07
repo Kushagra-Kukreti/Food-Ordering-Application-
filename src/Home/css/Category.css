@@ -1,0 +1,38 @@
+
+.category-card {
+    min-width: 20rem;
+    width: 20rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border-radius: 1em;
+}
+
+.category-card:hover {
+    transform: translateY(-0.75em);
+    box-shadow: 1em 1em 1em whitesmoke;
+}
+
+.category-img {
+    height: 12rem;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0.5em;
+}
+
+.category-content {
+    padding: 1rem;
+}
+
+.category-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.category-description {
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
+}
