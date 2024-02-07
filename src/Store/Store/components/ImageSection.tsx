@@ -7,7 +7,7 @@ const ImageSection = ({ id, url, price, title, rating }:StoreItemProp) => {
       className="card-img-top" to={"/product"}
       state={{ id, url, price, title, rating }}
     >
-      <img src={url} className="item-image" alt={title} />
+      <img src={url} className="item-image" />
     </NavLink>
   
   )
