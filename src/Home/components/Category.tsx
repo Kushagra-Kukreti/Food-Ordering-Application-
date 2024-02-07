@@ -25,7 +25,6 @@ const Category: React.FC<CategoryProps> = ({ item, index }) => {
             <img
                 className="category-img"
                 src={item.imgUrl}
-                alt="Category Image"
             />
             <div className="category-content">
                 <h5 className="category-title">{item.type}</h5>
