@@ -12,14 +12,15 @@ export type StoreItemProp = {
   price: number;
   title: string;
   rating: number;
+  category:string
 };
 
-const StoreItem: React.FC<StoreItemProp> = ({ id, url, price, title, rating }) => {
+const StoreItem: React.FC<StoreItemProp> = ({ id, url, price, title, rating,category}) => {
 
   return (
     <div className="card" style={{ width: "22rem" }}>
       <Suspense fallback={<Skeleton animation="wave" variant="rectangular" style={{height:"15em",width:"100%",objectFit:"cover",borderRadius:"1em"}}/>}>
-      <ImageSection id={id} url={url} price={price} title={title} rating={rating} />
+      <ImageSection id={id} url={url} price={price} title={title} rating={rating} category={category}/>
       </Suspense>
       <div className="d-flex flex-column p-1">
        <DetailsSection price={price} rating={rating} title={title}/>
