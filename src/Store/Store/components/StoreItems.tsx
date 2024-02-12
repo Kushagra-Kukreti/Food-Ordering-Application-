@@ -27,6 +27,7 @@ const StoreItems = ({search}:StoreItemsProp) => {
                   url={item.imgUrl}
                   price={item.price}
                   title={item.name}
+                  category={item.category}
                 />
               
             </div>
