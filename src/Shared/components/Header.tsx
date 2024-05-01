@@ -1,19 +1,28 @@
 import { NavLink } from "react-router-dom";
 import { useShoppingCart } from "../../context/ShoppingCartContext";
-import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
+import React, { useEffect } from "react";
 import "../css/Header.css";
 import BucketIcon from "./BucketIcon";
 import AuthenticationButtons from "./AuthenticationButtons";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setAuthStatus, setUserData } from "../../redux/authSlice";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Header: React.FC = () => {
   const { cartQuantity } = useShoppingCart();
-  const {isAuthenticated,user}= useAuth0()
+   const {auth,userData} =  useAppSelector((state)=>state.authSlice);
+  const dispatch  =  useAppDispatch();
+  const {isAuthenticated,user} = useAuth0();
 
-  if (isAuthenticated) {
+  if (auth) {
     localStorage.setItem("authentication", "true");
-    localStorage.setItem("name", user?.nickname?.toString() || "");
+    localStorage.setItem("name", userData?.nickname?.toString() || "");
   }
+   
+  useEffect(()=>{
+    dispatch(setAuthStatus(isAuthenticated));
+    dispatch(setUserData(user));
+  },[auth])
 
   return (
     <>
@@ -22,7 +31,7 @@ const Header: React.FC = () => {
           <div className="collapse navbar-collapse align-items-baseline" id="navbarSupportedContent">
             <NavLink className="navbar-brand" to={"/"}>
               <h2 className="brand-name">
-                <span className="brand-text">Food</span>Junction
+                <span className="brand-text">Shop</span>Junction
               </h2>
             </NavLink>
           </div>
@@ -30,7 +39,7 @@ const Header: React.FC = () => {
           <AuthenticationButtons/>
           &nbsp;
           &nbsp;
-          {cartQuantity > 0 && localStorage.getItem("authentication") ? (
+          {cartQuantity > 0 && auth ? (
             <button
               type="button"
               data-bs-toggle="offcanvas"

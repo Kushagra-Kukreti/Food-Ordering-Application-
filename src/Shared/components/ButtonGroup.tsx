@@ -1,8 +1,7 @@
+import { ButtonGroupProp } from "../../constants";
 import { useShoppingCart } from "../../context/ShoppingCartContext";
 import "../css/ButtonGroup.css"
-type ButtonGroupProp ={
-    id:number
-}
+
 const ButtonGroup = ({id}: ButtonGroupProp) => {
     const {
         getItemQuantity,

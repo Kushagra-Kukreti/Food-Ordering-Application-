@@ -1,15 +1,12 @@
 
-import React, { useEffect, useState } from 'react';
-import { dataItem, useShoppingCart } from '../../../context/ShoppingCartContext';
+import { useEffect, useState } from 'react';
+import { useShoppingCart } from '../../../context/ShoppingCartContext';
 import formatNumber from '../../../utils/Format';
 import "../css/CartItem.css"
+import { CartItemProps, dataItem } from '../../../constants';
 
-type CartItemProps = {
-    id: number;
-    quantity: number;
-};
 
-const CartItem: React.FC<CartItemProps> = ({ id, quantity }) => {
+const CartItem = ({ id, quantity }:CartItemProps) => {
     
     const { removeFromCart, dataItems } = useShoppingCart();
     const [itemInfo, setItemInfo] = useState<dataItem>();

@@ -1,45 +1,11 @@
 
 
-import { ReactNode, createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import ShoppingCartItem from "../Store/Cart/components/ShoppingCartItem"
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import { fetchData } from "../data/items"
-import { filterType } from "../Store/pages/Store"
+import { CartItem, dataItem, filterType, ShoppingCartProps, ShoppingCartProviderProps } from "../constants"
 
-
-type ShoppingCartProviderProps={
-    children:ReactNode
-}
-
-export type dataItem = {
-  id:number
-  name:string
-  price:number
-  imgUrl:string
-  rating:number 
-  category:string 
-}
-
-type ShoppingCartProps = {
-  cartQuantity:number
-  getItemQuantity:(id:number) =>number
-  increaseCartQuantity:(id:number)=>void
-  decreaseCartQuantity:(id:number)=>void
-  removeFromCart:(id:number)=>void
-  cartItems:CartItem[]
-  dataItems:dataItem[]
-  emptyCart:()=>void
-  appliedFilters:filterType[]
-  setAppliedFilters:React.Dispatch<React.SetStateAction<filterType[]>>
-  removeFromSelectedFilters:(title:string)=>void
-  storeItems:dataItem[]
-  setStoreItems:React.Dispatch<React.SetStateAction<dataItem[]>>
-}
-
-type CartItem = {
-  id:number,
-  quantity:number
-}
 const ShoppingCartContext = createContext({} as ShoppingCartProps)
 
 export function useShoppingCart(){
@@ -52,6 +18,8 @@ export function ShoppingCartProvider ({children}:ShoppingCartProviderProps){
   const[dataItems,setDataItems] = useLocalStorage<dataItem[]>("dataItems",[])
   const[storeItems,setStoreItems] = useState<dataItem[]>(dataItems)
   const [appliedFilters,setAppliedFilters] = useState<filterType[]>([])
+
+
   function getItemQuantity(id: number) {
     return cartItems.find(item => item.id === id)?.quantity || 0
   }
