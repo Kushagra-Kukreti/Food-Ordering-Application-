@@ -4,6 +4,8 @@ import React, { Suspense } from "react";
 import BeforeAuthentication from "../components/BeforeAuthentication";
 import Category from "../components/Category";
 import "../css/Home.css";
+import { setAuthStatus } from "../../redux/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 const Home: React.FC = () => {
   const categories = [
@@ -25,12 +27,14 @@ const Home: React.FC = () => {
   ];
 
   const { isAuthenticated } = useAuth0();
+ const dispatch =  useAppDispatch();
+ const auth =useAppSelector((state)=>state.authSlice.auth);
 
   if (isAuthenticated) {
-    localStorage.setItem("authentication", "true");
+    dispatch(setAuthStatus(isAuthenticated)); 
   }
 
-  if (!localStorage.getItem("authentication")) {
+  if (!auth) {
     return (
       <Suspense fallback={<Skeleton className="home-skeleton" variant="rectangular" animation="wave" />}>
         <BeforeAuthentication />

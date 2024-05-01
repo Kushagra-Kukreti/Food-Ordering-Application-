@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 const AuthenticationButtons = () => {
     const { loginWithRedirect, logout} = useAuth0();
+
   return (
     <>
     {localStorage.getItem("authentication") ? (

@@ -15,7 +15,7 @@ const StoreItems = ({search}:StoreItemsProp) => {
           .filter((i: dataItem) => {
             return search.toLowerCase() === " "
               ? i
-              : i.name.toLowerCase().startsWith(search.toLowerCase());
+              : i.name?.toLowerCase().startsWith(search.toLowerCase());
           })
           .map((item: dataItem, index: number) => (
             <div key={index} className="store-item">

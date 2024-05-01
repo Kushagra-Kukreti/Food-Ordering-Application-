@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { dataItem, useShoppingCart } from "../../context/ShoppingCartContext";
+import { useShoppingCart } from "../../context/ShoppingCartContext";
 import { filterData } from "../../utils/FilterData";
 import "../Store/css/Store.css";
 import StoreHeader from "../Store/components/StoreHeader";
 import StoreItems from "../Store/components/StoreItems";
+import { useAppSelector } from "../../redux/hooks";
+import { dataItem } from "../../constants";
 
-export type filterType = {
-  t: string;
-  v: string;
-};
+
 
 const Store: React.FC = () => {
   const [search, setSearch] = useState("");
   const { dataItems, appliedFilters, setStoreItems, storeItems } = useShoppingCart();
   const [categories, setCategories] = useState<string[]>();
   const navigate = useNavigate();
+
+  const auth = useAppSelector((state)=>state.authSlice.auth)
 
   useEffect(() => {
     const newData = filterData(appliedFilters, dataItems, storeItems);
@@ -39,7 +40,7 @@ const Store: React.FC = () => {
     };
   }, [dataItems]);
 
-  if (!localStorage.getItem('authentication')) {
+  if (!auth) {
     navigate("/");
   }
 

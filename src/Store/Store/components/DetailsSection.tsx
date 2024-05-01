@@ -11,7 +11,7 @@ const DetailsSection = ({price,rating,title}:DetailsSectionProp) => {
   return (
     <div className="d-flex flex-row justify-content-between align-items-baseline m-2">
           <h4 className="card-text">
-            {title}{" "}
+            {title.slice(0,15)}{" "}
            <RatingBadge rating ={rating}/>
           </h4>
           <h5 className="card-text text-muted">{formatNumber(price)}</h5>
