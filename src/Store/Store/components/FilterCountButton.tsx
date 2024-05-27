@@ -1,9 +1,10 @@
-import { useShoppingCart } from "../../../context/ShoppingCartContext";
 import React from "react";
 import "../css/FilterCountButton.css";
+import { useAppSelector } from "../../../redux/hooks";
 
 const FilterCountButton: React.FC = () => {
-  const { appliedFilters } = useShoppingCart();
+  // const { appliedFilters } = useShoppingCart();
+  const { appliedFilters } = useAppSelector(state=>state.cartSlice);
   return (
     <div key={"Filters"}>
       <div className="filter-button">

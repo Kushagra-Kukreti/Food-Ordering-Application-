@@ -1,31 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useShoppingCart } from "../../context/ShoppingCartContext";
 import { filterData } from "../../utils/FilterData";
 import "../Store/css/Store.css";
 import StoreHeader from "../Store/components/StoreHeader";
 import StoreItems from "../Store/components/StoreItems";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { dataItem } from "../../constants";
+import { setDataItems, setStoreItems } from "../../redux/cartSlice";
+import { fetchData } from "../../data/items";
 
 
 
 const Store: React.FC = () => {
   const [search, setSearch] = useState("");
-  const { dataItems, appliedFilters, setStoreItems, storeItems } = useShoppingCart();
+  // const { dataItems, appliedFilters, setStoreItems, storeItems } = useShoppingCart();
+  const { dataItems, appliedFilters, storeItems } =  useAppSelector(state=>state.cartSlice);
   const [categories, setCategories] = useState<string[]>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
 
   const auth = useAppSelector((state)=>state.authSlice.auth)
 
+
+  useEffect(()=>{
+    fetchData().then((fetchedData) => {
+      dispatch(setDataItems(fetchedData))
+     });
+     
+  },[])
+
   useEffect(() => {
     const newData = filterData(appliedFilters, dataItems, storeItems);
-    setStoreItems(newData);
+    dispatch(setStoreItems(newData));
   }, [appliedFilters]);
 
   useEffect(() => {
     console.log("Data Items initialised")
-    setStoreItems(dataItems);
+    dispatch(setStoreItems(dataItems));
+    console.log("Store items from store::",storeItems);
+    console.log("Data items::",dataItems);
     const categoriesSet = new Set<string>();
     dataItems.forEach((item: dataItem) => {
       categoriesSet.add(item.category);
@@ -35,7 +48,7 @@ const Store: React.FC = () => {
 
     return () => {
       console.log("Store unmounted")
-      setStoreItems([]);
+      dispatch(setStoreItems([])); 
       setCategories([]);
     };
   }, [dataItems]);

@@ -52,5 +52,5 @@ export type CartState = {
   dataItems: dataItem[];
   storeItems: dataItem[];
   appliedFilters: filterType[];
-  itemQuantity:number;
+  cartQuantity:number;
 };

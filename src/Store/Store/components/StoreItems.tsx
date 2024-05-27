@@ -1,5 +1,5 @@
-
-import { dataItem, useShoppingCart } from "../../../context/ShoppingCartContext";
+import { dataItem } from "../../../constants";
+import { useAppSelector } from "../../../redux/hooks";
 import StoreItem from "./StoreItem";
 
 
@@ -8,7 +8,8 @@ type StoreItemsProp ={
 }
 const StoreItems = ({search}:StoreItemsProp) => {
 
-    const { storeItems } = useShoppingCart();
+    // const { storeItems } = useShoppingCart();
+    const { storeItems } = useAppSelector(state=>state.cartSlice);
   return (
     <>
     {storeItems && storeItems
