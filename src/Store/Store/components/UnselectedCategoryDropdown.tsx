@@ -1,4 +1,5 @@
-import { useShoppingCart } from "../../../context/ShoppingCartContext"
+import { setAppliedFilters } from "../../../redux/cartSlice"
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks"
 import "../css/Dropdown.css"
 
 
@@ -8,7 +9,9 @@ type UnselectedCategoryDropdown ={
     setSelected:React.Dispatch<React.SetStateAction<boolean>>
 }
 const UnselectedCategoryDropdown = ({title,menuInfo,setSelected}:UnselectedCategoryDropdown) => {
-    const { setAppliedFilters, appliedFilters } = useShoppingCart();
+    // const { setAppliedFilters, appliedFilters } = useShoppingCart();
+    const { appliedFilters } = useAppSelector(state=>state.cartSlice);
+    const dispatch = useAppDispatch();
   return (
     <div key={title} className="dropdown">
                 <button className="btn dropdown-toggle text-muted" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -20,7 +23,7 @@ const UnselectedCategoryDropdown = ({title,menuInfo,setSelected}:UnselectedCateg
                             <a
                                 onClick={() => {
                                     setSelected(true);
-                                    setAppliedFilters([...appliedFilters, { t: title, v: item }]);
+                                    dispatch(setAppliedFilters([...appliedFilters, { t: title, v: item }]));
                                 }}
                                 className="dropdown-item"
                                 href="#"

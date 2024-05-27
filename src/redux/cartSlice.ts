@@ -6,16 +6,15 @@ const initialState: CartState = {
   dataItems: [],
   storeItems: [],
   appliedFilters: [],
-  itemQuantity: 0,
+  cartQuantity:0,
+
 };
 const cartSlice = createSlice({
   name: "cartSlice",
   initialState,
   reducers: {
-    getItemQuantity: (state, action) => {
-      state.itemQuantity =
-        state.cartItems.find((item) => item.id === action.payload)?.quantity ||
-        0;
+    setCartQuantity:(state)=>{
+       state.cartQuantity = state.cartItems.reduce((quantity,item)=>item.quantity+quantity,0);
     },
 
     increaseCartQuantity: (state, action) => {
@@ -64,17 +63,30 @@ const cartSlice = createSlice({
       );
       state.appliedFilters = newFilters;
     },
+    setStoreItems:(state,action)=>{
+       state.storeItems = action.payload;
+       console.log("Data items from cartSlice::",state.storeItems)
+    },
+    setAppliedFilters:(state,action)=>{
+         state.appliedFilters = action.payload;
+    }
+    ,
+    setDataItems:(state,action)=>{
+      state.dataItems = action.payload;
+    }
   },
 });
 
 export const 
 {
-  getItemQuantity,
   increaseCartQuantity,
   emptyCart,
+  setCartQuantity,
   decreaseCartQuantity,
   removeFromCart,
   removeFromSelectedFilters,
-  
+  setStoreItems,
+  setAppliedFilters,
+  setDataItems,
 } = cartSlice.actions;
 export default cartSlice.reducer;

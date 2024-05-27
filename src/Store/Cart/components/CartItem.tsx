@@ -1,15 +1,18 @@
 
 import { useEffect, useState } from 'react';
-import { useShoppingCart } from '../../../context/ShoppingCartContext';
 import formatNumber from '../../../utils/Format';
 import "../css/CartItem.css"
 import { CartItemProps, dataItem } from '../../../constants';
+import { removeFromCart } from '../../../redux/cartSlice';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 
 
 const CartItem = ({ id, quantity }:CartItemProps) => {
     
-    const { removeFromCart, dataItems } = useShoppingCart();
+    // const { removeFromCart, dataItems } = useShoppingCart();
+    const {dataItems} = useAppSelector(state=>state.cartSlice);
     const [itemInfo, setItemInfo] = useState<dataItem>();
+    const dispatch  = useAppDispatch();
 
     useEffect(() => {
         const matchedItem = dataItems.find((i: dataItem) => i.id === id);
@@ -28,7 +31,7 @@ const CartItem = ({ id, quantity }:CartItemProps) => {
                 <div className='text-muted'>{formatNumber(itemInfo?.price)}</div>
             </div>
             <div>{formatNumber(itemInfo?.price * quantity)}</div>
-            <button className='remove-button' onClick={() => removeFromCart(itemInfo?.id)}>
+            <button className='remove-button' onClick={() => dispatch(removeFromCart(itemInfo?.id))}>
                 &times;
             </button>
         </div>

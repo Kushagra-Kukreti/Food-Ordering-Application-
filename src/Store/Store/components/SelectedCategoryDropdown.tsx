@@ -1,4 +1,5 @@
-import { useShoppingCart } from "../../../context/ShoppingCartContext";
+import { removeFromSelectedFilters } from "../../../redux/cartSlice";
+import { useAppDispatch } from "../../../redux/hooks";
 import "../css/Dropdown.css"
 type SelectedCategoryDropdownProp ={
     title:string
@@ -6,14 +7,15 @@ type SelectedCategoryDropdownProp ={
 }
 
 const SelectedCategoryDropdown = ({title,setSelected}:SelectedCategoryDropdownProp) => {
-    const {removeFromSelectedFilters} =useShoppingCart()
+    // const {removeFromSelectedFilters} =useShoppingCart()
+    const dispatch =  useAppDispatch();
   return (
         <div
             key={title}
             className="selectedDropdown"
             onClick={() => {
                 setSelected(false);
-                removeFromSelectedFilters(title);
+                dispatch(removeFromSelectedFilters(title));
             }}
         >
             <span>{title}</span>

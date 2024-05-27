@@ -1,9 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useShoppingCart } from "../../../context/ShoppingCartContext";
+import { useAppDispatch } from "../../../redux/hooks";
+import { emptyCart } from "../../../redux/cartSlice";
 
 const CheckoutButton = () => {
 
-    const {emptyCart} = useShoppingCart()
+    // const {emptyCart} = useShoppingCart()
+    const dispatch = useAppDispatch();
     const {logout} =  useAuth0()
   return (
     <div
@@ -12,7 +14,7 @@ const CheckoutButton = () => {
             logout({ logoutParams: { returnTo: window.location.origin } });
             localStorage.removeItem("authentication");
             localStorage.removeItem("name");
-            emptyCart();
+            dispatch(emptyCart());
           }}
         >
           CHECKOUT

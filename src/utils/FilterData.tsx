@@ -1,5 +1,4 @@
-import { dataItem} from "../context/ShoppingCartContext";
-import { filterType } from "../Store/pages/Store";
+import { dataItem, filterType } from "../constants";
 
  export const filterData = (appliedFilters:filterType[],dataItems:dataItem[],storeItems:dataItem[])=>{ 
 

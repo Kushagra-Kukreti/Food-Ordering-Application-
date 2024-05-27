@@ -1,9 +1,11 @@
-import { useShoppingCart } from "../../../context/ShoppingCartContext";
+
 import formatNumber from "../../../utils/Format"
+import { useAppSelector } from "../../../redux/hooks";
 
 
 const CartTotalSection = () => {
-  const { dataItems, cartItems} = useShoppingCart();
+  // const { dataItems, cartItems} = useShoppingCart();
+  const {dataItems,cartItems} = useAppSelector(state=>state.cartSlice);
 
   const totalAmount = cartItems.reduce((total, item) => {
     const foundItem = dataItems.find((myItem) => myItem.id === item.id);
