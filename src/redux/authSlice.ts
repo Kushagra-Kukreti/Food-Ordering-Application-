@@ -5,8 +5,11 @@ type AuthProps = {
   userData: any;
 };
 
+
+const authStatus = localStorage.getItem("authentication")?true:false;
+
 const initialState: AuthProps = {
-  auth: false,
+  auth: authStatus,
   userData: null,
 };
 
@@ -15,8 +18,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setAuthStatus: (state, action) => {
-      state.auth =
-        action.payload || localStorage.getItem("authentication") || false;
+      state.auth = action.payload;
+      if(action.payload === true){
+        localStorage.setItem("authentication","true");
+      }
+      else{
+        localStorage.removeItem("authentication");
+      }
     },
     setUserData: (state, action) => {
       state.userData = action.payload;

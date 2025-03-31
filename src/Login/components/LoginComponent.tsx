@@ -7,17 +7,34 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import {Link as RouterLink} from "react-router-dom"
+import {Link as RouterLink, useNavigate} from "react-router-dom"
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import useSignIn from '../../hooks/useSignIn';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../redux/hooks';
+import { setAuthStatus } from '../../redux/authSlice';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
-
 const LoginComponent = () => {
+  const navigate = useNavigate();
+ const dispatch =  useAppDispatch()
+  const {signIn,error,user} = useSignIn();
+  useEffect(()=>{
+    if(user){
+      console.log("Signed in successfully");
+      localStorage.setItem("authentication","true");
+      navigate("/");
+    }
+    else{
+      console.log("Error is",error);
+    }
+    
+  },[user])
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -25,6 +42,9 @@ const LoginComponent = () => {
           email: data.get('email'),
           password: data.get('password'),
         });
+        signIn(data.get('email') as string,data.get('password') as string)
+        dispatch(setAuthStatus(true));
+
       };
     return (
         <ThemeProvider theme={defaultTheme}>

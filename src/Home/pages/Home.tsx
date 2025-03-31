@@ -1,13 +1,11 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import Skeleton from "@mui/material/Skeleton";
-import React, { Suspense } from "react";
-import BeforeAuthentication from "../components/BeforeAuthentication";
+import { Suspense, useEffect } from "react";
 import Category from "../components/Category";
 import "../css/Home.css";
-import { setAuthStatus } from "../../redux/authSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {  useAppSelector } from "../../redux/hooks";
+import { useNavigate } from "react-router-dom";
 
-const Home: React.FC = () => {
+const Home= () => {
   const categories = [
     {
       type: "Dining",
@@ -26,21 +24,24 @@ const Home: React.FC = () => {
     },
   ];
 
-  const { isAuthenticated } = useAuth0();
- const dispatch =  useAppDispatch();
+
+  const navigate = useNavigate();
+
  const auth =useAppSelector((state)=>state.authSlice.auth);
 
-  if (isAuthenticated) {
-    dispatch(setAuthStatus(isAuthenticated)); 
-  }
-
+useEffect(()=>{
   if (!auth) {
-    return (
-      <Suspense fallback={<Skeleton className="home-skeleton" variant="rectangular" animation="wave" />}>
-        <BeforeAuthentication />
-      </Suspense>
-    );
-  }
+    navigate("/auth/login");
+    
+   
+   // <Suspense fallback={<Skeleton className="home-skeleton" variant="rectangular" animation="wave" />}>
+   //   <BeforeAuthentication />
+   // </Suspense>
+ 
+}
+
+},[])
+  
 
   return (
     <div className="home-container">
