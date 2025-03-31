@@ -9,18 +9,38 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import {Link as RouterLink} from "react-router-dom"
+import {Link as RouterLink, useNavigate} from "react-router-dom"
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import useSignUp from '../../hooks/useSignUp';
+import { useEffect } from 'react';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 const SignUpComponent = () => {
+  const navigate = useNavigate();
+  const {signUp,error,user} = useSignUp();
+
+  useEffect(()=>{
+    if(user){
+      console.log("User created successfully");
+      localStorage.setItem("authentication","true");
+      navigate("/");
+    }
+    else{
+      console.log("Error is",error);
+    }
+    
+  },[user])
+ 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        signUp(data.get('email') as string ,data.get('password') as string )
+
+       
         console.log({
           email: data.get('email'),
           password: data.get('password'),

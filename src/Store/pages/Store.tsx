@@ -53,8 +53,9 @@ const Store: React.FC = () => {
     };
   }, [dataItems]);
 
-  if (!auth) {
-    navigate("/");
+  if (auth === false) {
+    console.log("authentication false hogya")
+    navigate("/auth/login");
   }
 
   return (

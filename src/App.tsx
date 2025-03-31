@@ -8,14 +8,26 @@ import ShoppingCartItem from "./Store/Cart/components/ShoppingCartItem";
 import Login from "./Login/pages/Login";
 import LoginComponent from "./Login/components/LoginComponent";
 import SignUpComponent from "./SignUp/components/SignUpComponent";
+import { useAppSelector } from "./redux/hooks";
+import { useEffect, useState } from "react";
 
 function App() {
 
+   
+   const [showHeader,setShowHeader] = useState(false);
+
   const location = useLocation();
   const currentPath = location.pathname;
+  const {auth}=useAppSelector((state)=>state.authSlice) 
+  useEffect(()=>{
+    
+    if(auth){
+      setShowHeader(auth);
+    }
+  },[auth])
   return (
     <>
-    {(currentPath!== "/auth/login" && currentPath!== "/auth/signup")? <Header />:""}
+    {(currentPath!== "/auth/login" && currentPath!== "/auth/signup" && showHeader === true )? <Header />:""}
       <div className="container">
         <Routes>
         <Route path="/auth" element = {<Login/>}>
@@ -23,7 +35,7 @@ function App() {
         <Route path="signup" element={<SignUpComponent/>} />  
         </Route>
         
-        <Route path="/login" element={<Login/>} />
+          <Route path="/login" element={<Login/>} />
           <Route path="/store" element={<Store />} />
           <Route path="/product" element={<Product />} />
           <Route path="/*" element={<Home />} />
